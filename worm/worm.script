@@ -1,0 +1,55 @@
+currentHost = getHostname();
+targets = scan(currentHost, true);
+for (var i in targets) {
+    target = targets[i];
+    if(target == args[0] || target == "home"){
+        continue;
+    }
+    print("Targeting " + target);
+    hasRoot = hasRootAccess(target);
+    if (!hasRoot) {
+        levelRequired = getServerRequiredHackingLevel(target);
+        currentLevel = getHackingLevel();
+        if (currentLevel >= levelRequired &&
+            getServerNumPortsRequired(target) < 6) {
+            
+            brutessh(target);
+            ftpcrack(target);
+            relaysmtp(target);
+            httpworm(target);
+            sqlinject(target);
+            
+            nuke(target);
+            hasRoot = true;
+        }
+    }
+    if (hasRoot) {
+        scp(getScriptName(), target);
+        scp("hack.script", target);
+        scp("grow.script", target);
+        scp("weaken.script", target);
+        exec(getScriptName(), target, 1, currentHost);
+    }
+}
+
+for(var i in targets){
+    target = targets[i];
+    if(hasRootAccess(target)){
+        while(isRunning(getScriptName(), target, currentHost)){
+            sleep(50);
+        }
+        totalRam = getServerRam(target)[0];
+        hackRamNeeded = getScriptRam('hack.script', target);
+        growRamNeeded = getScriptRam('grow.script', target);
+        weakenRamNeeded = getScriptRam('weaken.script', target);
+        
+        hackNumThreads = Math.floor(totalRam / hackRamNeeded);
+        growNumThreads = Math.floor(totalRam / growRamNeeded);
+        weakenNumThreads = Math.floor(totalRam / weakenRamNeeded);
+        
+        if (hackNumThreads > 0) {
+            exec("hack.script", target, hackNumThreads, "phantasy", hackNumThreads, growNumThreads, weakenNumThreads);
+            // exec("hack.script", target, hackNumThreads, target, hackNumThreads, growNumThreads, weakenNumThreads);
+        }
+    }
+}
