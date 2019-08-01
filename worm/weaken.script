@@ -1,0 +1,10 @@
+hostname = args[0];
+minSecurityLevel = Math.max(1, Math.round(getServerBaseSecurityLevel(hostname) / 3));
+print("minSecurityLevel="+minSecurityLevel);
+secLevel = getServerSecurityLevel(hostname);
+while( secLevel > minSecurityLevel){
+    weaken(hostname, {threads : args[3]});
+    secLevel = getServerSecurityLevel(hostname);
+}
+sleep(10*1000);
+spawn("hack.script", args[1], args[0], args[1], args[2], args[3])
