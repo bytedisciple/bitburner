@@ -1,0 +1,11 @@
+moneyAvail = getServerMoneyAvailable(args[0]);
+moneyTarg = getServerMaxMoney(args[0]) * 0.1;
+print("Checking " + moneyAvail + ">" + moneyTarg);
+while (moneyAvail > moneyTarg) {
+    hack(args[0], { threads: args[1] })
+    moneyAvail = getServerMoneyAvailable(args[0]);
+    moneyTarg = getServerMaxMoney(args[0]) * 0.1;
+    print("Checking " + moneyAvail + ">" + moneyTarg);
+}
+sleep(10*1000);
+spawn("grow.script", args[2], args[0], args[1], args[2], args[3])
