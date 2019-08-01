@@ -1,0 +1,12 @@
+hostname=args[0];
+moneyAvail = getServerMoneyAvailable(hostname);
+moneyTarg = getServerMaxMoney(hostname) * 0.75;
+print("Checking " + moneyAvail +"<"+moneyTarg);
+while(moneyAvail < moneyTarg){
+    grow(hostname, {threads : args[2]});
+    moneyAvail = getServerMoneyAvailable(hostname);
+    moneyTarg = getServerMaxMoney(hostname) * 0.75;
+    print("Checking " + moneyAvail +"<"+moneyTarg);
+}
+sleep(10* 1000);
+spawn("weaken.script", args[3], args[0], args[1], args[2], args[3]);
