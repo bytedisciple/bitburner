@@ -48,7 +48,7 @@ for(var i in targets){
         weakenNumThreads = Math.floor(totalRam / weakenRamNeeded);
         
         if (hackNumThreads > 0) {
-            exec("hack.script", target, hackNumThreads, "phantasy", hackNumThreads, growNumThreads, weakenNumThreads);
+            exec("hack.script", target, hackNumThreads, args[0], hackNumThreads, growNumThreads, weakenNumThreads);
             // exec("hack.script", target, hackNumThreads, target, hackNumThreads, growNumThreads, weakenNumThreads);
         }
     }
